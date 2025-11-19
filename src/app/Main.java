@@ -1,17 +1,67 @@
 package app;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import models.Order;
+import models.Customer;
+import models.Employee;
+import models.Product;
+import models.Payment;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+
+
+ import java.time.LocalTime;
+
+    public class Main {
+        public static void main(String[] args) {
+            // Init shop
+            CafeShop shop = new CafeShop();
+
+            // Products
+            Product latte = new Product("Latte ", 35.0, " coffee ", true);
+            Product croissant = new Product(" Croissant ", 18.0, " food ", true);
+            Product espresso = new Product("Espresso ", 25.0,   "  coffee ", false); // currently unavailable
+
+            shop.addProductToMenu(latte);
+            System.out.println("-------------------------------------------------------");
+            shop.addProductToMenu(croissant);
+            shop.addProductToMenu(espresso);
+
+            shop.printMenu();
+
+            // Employees
+            Employee alice = new Employee("Alice ", "barista ");
+            alice.addSchedule("Monday ", LocalTime.of(9,0), LocalTime.of(17,0));
+            Employee bob = new Employee("Bob ", "manager ");
+            shop.hireEmployee(alice);
+            shop.hireEmployee(bob);
+            System.out.println("-------------------------------------------------------");
+            System.out.println(alice);
+
+            // Customer
+            Customer Andreea = new Customer("Andreea ", "+37360844995");
+
+            //john.addPoints(120); // VIP now
+            System.out.println("-------------------------------------------------------");
+            System.out.println(Andreea);
+
+            // Create an order
+            Order order = new Order();
+            order.addProduct(latte);
+            order.addProduct(croissant);
+            order.addProduct(espresso); // will print not available
+            System.out.println("-------------------------------------------------------");
+            System.out.println(order);
+            System.out.println("-------------------------------------------------------");
+            order.changeStatus(Order.Status.PREPARING);
+            System.out.println("-------------------------------------------------------");
+            System.out.println(order);
+            System.out.println("-------------------------------------------------------");
+
+            // Pay
+            Payment payment = new Payment(order.getTotalAmount(), " card ");
+            boolean success = shop.checkout(order, payment);
+            System.out.println("-------------------------------------------------------");
+            System.out.println("Checkout success: " + success);
+
+           // System.out.println(order);
         }
     }
-}
